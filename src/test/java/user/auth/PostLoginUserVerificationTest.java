@@ -31,7 +31,7 @@ public class PostLoginUserVerificationTest {
      * После этого выполняется вход пользователя в систему при помощи метода loginUser и проверяется, что пользователь успешно авторизовался.
      */
     @Test
-    @DisplayName("User login")
+    //@DisplayName("User login")
     @Description("This test verifies that user can be logged after it's registration")
     @Severity(SeverityLevel.BLOCKER)
     public void loginUser() {

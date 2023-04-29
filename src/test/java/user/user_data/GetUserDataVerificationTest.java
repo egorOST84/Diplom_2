@@ -40,7 +40,7 @@ public class GetUserDataVerificationTest {
      */
 
     @Test
-    @DisplayName("Get user data | authorized")
+    //@DisplayName("Get user data | authorized")
     @Description("This test verifies that user's can be received after authorization")
     @Severity(SeverityLevel.CRITICAL)
     public void getUserDataAuthorized() throws Exception{

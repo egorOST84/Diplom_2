@@ -70,7 +70,7 @@ public class PostCreateUserValidationMissingFieldTest {
      * об ошибке с помощью метода checkResponse().
      */
     @Test
-    @DisplayName("User registration / \"without required fields\" validation / negative")
+    //@DisplayName("User registration / \"without required fields\" validation / negative")
     @Description("This test verifies that user without email, password or name cannot created")
     @Severity(SeverityLevel.BLOCKER)
     public void createNewUserWithMissingField() throws Exception {

@@ -40,7 +40,7 @@ public class PatchUserChangeValidationTest {
      */
 
     @Test
-    @DisplayName("Update user / \"without authorization\" validation / negative")
+    //@DisplayName("Update user / \"without authorization\" validation / negative")
     @Description("Verify that attempting to change a user's email and name without authorization results in a 401 error")
     @Severity(SeverityLevel.CRITICAL)
     public void changeUserEmailAndNameUnauthorized() throws Exception {
@@ -61,7 +61,7 @@ public class PatchUserChangeValidationTest {
      * на уже существующий в системе email, будет получена ошибка со статус кодом 403.
      */
     @Test
-    @DisplayName("Update user / \"with existing email\" validation / negative")
+    //@DisplayName("Update user / \"with existing email\" validation / negative")
     @Description("")
     @Severity(SeverityLevel.CRITICAL)
     public void changeUserEmailWithExistingEmail() throws Exception {

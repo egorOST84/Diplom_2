@@ -37,7 +37,7 @@ public class PatchUserChangeVerificationTest {
      */
 
     @Test
-    @DisplayName("Change user email and name | authorized")
+    //@DisplayName("Change user email and name | authorized")
     @Description("This test verifies that user email and name can be changed after authorization")
     @Severity(SeverityLevel.CRITICAL)
     public void changeUserEmailAndNameAuthorized() throws Exception {

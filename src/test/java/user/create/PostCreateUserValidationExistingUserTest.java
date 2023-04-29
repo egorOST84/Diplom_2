@@ -39,7 +39,7 @@ public class PostCreateUserValidationExistingUserTest {
      */
 
     @Test
-    @DisplayName("User registration / \"with existing name\" validation / negative")
+    //@DisplayName("User registration / \"with existing name\" validation / negative")
     @Description("This test verifies that user with existing name cannot be created")
     @Severity(SeverityLevel.BLOCKER)
     public void createNewUserWithExistingName() throws Exception {

@@ -67,7 +67,7 @@ public class PostLoginUserInvalidCredentialsTest {
      */
 
     @Test
-    @DisplayName("User login / \"with invalid credentials\" validation / negative")
+    //@DisplayName("User login / \"with invalid credentials\" validation / negative")
     @Description("This test verifies that user with invalid credentials cannot be logged")
     @Severity(SeverityLevel.BLOCKER)
     public void loginUserWithInvalidCredentials() throws Exception {

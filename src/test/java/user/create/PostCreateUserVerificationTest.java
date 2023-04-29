@@ -37,7 +37,7 @@ public class PostCreateUserVerificationTest {
      * которые включены в метод registrationNewUserAndVerifyResponse().
      */
     @Test
-    @DisplayName("User registration")
+    //@DisplayName("User registration")
     @Description("This test verifies that user can created")
     @Severity(SeverityLevel.BLOCKER)
     public void createNewUser() throws Exception {
