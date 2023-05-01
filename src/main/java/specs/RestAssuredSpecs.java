@@ -64,7 +64,17 @@ public class RestAssuredSpecs {
                 .build();
     }
 
-    public static ResponseSpecification successdeleteRegisteredUserResponse() {
+    public static ResponseSpecification userNotFoundResponse() {
+        return new ResponseSpecBuilder()
+                .expectContentType(ContentType.JSON)
+                .expectStatusCode(HttpStatus.SC_NOT_FOUND)
+                .expectBody("success", is(false))
+                .expectBody("message", equalTo("User not found"))
+                .log(LogDetail.ALL)
+                .build();
+    }
+
+    public static ResponseSpecification successDeleteRegisteredUserResponse() {
         return new ResponseSpecBuilder()
                 .expectContentType(ContentType.JSON)
                 .expectStatusCode(HttpStatus.SC_ACCEPTED)
