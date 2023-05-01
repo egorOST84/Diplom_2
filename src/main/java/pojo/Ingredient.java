@@ -1,6 +1,10 @@
 package pojo;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Ingredient {
-    private String _id;
+    @JsonProperty("_id")
+    private String id;
     private String name;
     private String type;
     private Long proteins;
@@ -9,15 +13,19 @@ public class Ingredient {
     private Long calories;
     private Long price;
     private String image;
+    @JsonProperty("image_mobile")
     private String imageMobile;
+    @JsonProperty("image_large")
     private String imageLarge;
+    @JsonProperty("__v")
+    private Long v;
 
     public Ingredient() {
     }
 
-    public Ingredient(String id, String name, String type, Long proteins, Long fat, Long carbohydrates, Long calories, Long price, String image, String imageMobile, String imageLarge, Long v) {
+    public Ingredient(String id, String name, String type, Long proteins, Long fat, Long carbohydrates, Long calories, Long price, String image, String imageMobile, String imageLarge, Long v, Long v1) {
         super();
-        this._id = id;
+        this.id = id;
         this.name = name;
         this.type = type;
         this.proteins = proteins;
@@ -28,14 +36,15 @@ public class Ingredient {
         this.image = image;
         this.imageMobile = imageMobile;
         this.imageLarge = imageLarge;
+        this.v = v1;
     }
 
     public String getId() {
-        return _id;
+        return id;
     }
 
     public Ingredient setId(String id) {
-        this._id = id;
+        this.id = id;
         return this;
     }
 
@@ -127,5 +136,13 @@ public class Ingredient {
     public Ingredient setImageLarge(String imageLarge) {
         this.imageLarge = imageLarge;
         return this;
+    }
+
+    public Long getV() {
+        return v;
+    }
+
+    public void setV(Long v) {
+        this.v = v;
     }
 }
