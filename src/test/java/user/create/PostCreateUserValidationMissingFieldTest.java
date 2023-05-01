@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import static utilities.UserGenerator.generateRandomUser;
 @Feature("[User registration] POST api/auth/register - \"fields\" validation / negative")
 @RunWith(Parameterized.class)
 public class PostCreateUserValidationMissingFieldTest {
-    private final String description;
     private final String email;
     private final String name;
     private final String password;
@@ -32,7 +30,6 @@ public class PostCreateUserValidationMissingFieldTest {
     private static BaseSteps baseSteps;
 
     public PostCreateUserValidationMissingFieldTest(String description, String email, String name, String password, ErrorMessage errorMessage) {
-        this.description = description;
         this.email = email;
         this.name = name;
         this.password = password;
@@ -73,7 +70,7 @@ public class PostCreateUserValidationMissingFieldTest {
     //@DisplayName("User registration / \"without required fields\" validation / negative")
     @Description("This test verifies that user without email, password or name cannot created")
     @Severity(SeverityLevel.BLOCKER)
-    public void createNewUserWithMissingField() throws Exception {
+    public void validateCreateNewUserWithMissingField() throws Exception {
         User user = new User(email, name, password);
         Response response = baseSteps.sendRegistrationUserRequestAndGetResponse(user);
         baseSteps.checkResponse(response, errorMessage);

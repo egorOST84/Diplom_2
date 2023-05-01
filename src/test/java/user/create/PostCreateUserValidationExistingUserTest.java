@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -42,7 +41,7 @@ public class PostCreateUserValidationExistingUserTest {
     //@DisplayName("User registration / \"with existing name\" validation / negative")
     @Description("This test verifies that user with existing name cannot be created")
     @Severity(SeverityLevel.BLOCKER)
-    public void createNewUserWithExistingName() throws Exception {
+    public void validateCreateNewUserWithExistingName() throws Exception {
         rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
         Response response = baseSteps.sendRegistrationUserRequestAndGetResponse(rndUser);
@@ -58,6 +57,6 @@ public class PostCreateUserValidationExistingUserTest {
     @After
     public void tearDown() throws Exception {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(rndUser, accessToken);
+        baseSteps.deleteRegisteredUser(accessToken);
     }
 }

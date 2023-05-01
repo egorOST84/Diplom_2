@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,14 +23,12 @@ import static utilities.UserGenerator.generateRandomUser;
 @Feature("[User authorization] POST api/auth/login - \"credentials\" validation / negative")
 @RunWith(Parameterized.class)
 public class PostLoginUserInvalidCredentialsTest {
-    private final String description;
     private final String email;
     private final String password;
     private final ErrorMessage errorMessage;
     private static BaseSteps baseSteps;
 
     public PostLoginUserInvalidCredentialsTest(String description, String email, String password, ErrorMessage errorMessage) {
-        this.description = description;
         this.email = email;
         this.password = password;
         this.errorMessage = errorMessage;
@@ -70,7 +67,7 @@ public class PostLoginUserInvalidCredentialsTest {
     //@DisplayName("User login / \"with invalid credentials\" validation / negative")
     @Description("This test verifies that user with invalid credentials cannot be logged")
     @Severity(SeverityLevel.BLOCKER)
-    public void loginUserWithInvalidCredentials() throws Exception {
+    public void validateLoginUserWithInvalidCredentials() throws Exception {
         User user = new User(email, generateRandomUser().getName(), password);
         Response response = baseSteps.sendLoginUserRequestAndGetResponse(user);
         baseSteps.checkResponse(response, errorMessage);

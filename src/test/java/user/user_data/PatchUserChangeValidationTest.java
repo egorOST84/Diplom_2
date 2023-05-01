@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -64,7 +63,7 @@ public class PatchUserChangeValidationTest {
     //@DisplayName("Update user / \"with existing email\" validation / negative")
     @Description("")
     @Severity(SeverityLevel.CRITICAL)
-    public void changeUserEmailWithExistingEmail() throws Exception {
+    public void validateChangeUserEmailWithExistingEmail() throws Exception {
         // Регистрируем нового пользователя
         rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
@@ -80,7 +79,7 @@ public class PatchUserChangeValidationTest {
         // Проверяем, что код ответа 403 Forbidden, а сообщение ответа соответствует ожидаемому сообщению об ошибке.
         baseSteps.checkResponse(response, ErrorMessage.USER_UPDATE_EXISTING_EMAIL_ERROR_403);
         // Удаляем второго пользователя
-        baseSteps.deleteRegisteredUser(rndSecondUser, accessToken);
+        baseSteps.deleteRegisteredUser(accessToken);
     }
 
     /**
@@ -90,6 +89,6 @@ public class PatchUserChangeValidationTest {
     @After
     public void tearDown() throws Exception {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(rndUser, accessToken);
+        baseSteps.deleteRegisteredUser(accessToken);
     }
 }

@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class PostLoginUserVerificationTest {
     //@DisplayName("User login")
     @Description("This test verifies that user can be logged after it's registration")
     @Severity(SeverityLevel.BLOCKER)
-    public void loginUser() {
+    public void checkLoginUser() {
         rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
         baseSteps.loginUser(rndUser);
@@ -49,6 +48,6 @@ public class PostLoginUserVerificationTest {
     @After
     public void tearDown() throws Exception {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(rndUser, accessToken);
+        baseSteps.deleteRegisteredUser(accessToken);
     }
 }

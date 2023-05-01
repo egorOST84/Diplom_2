@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,7 +16,6 @@ import static utilities.UserGenerator.generateRandomUser;
 @Feature("[User] PATCH api/auth/user")
 public class PatchUserChangeVerificationTest {
     private static BaseSteps baseSteps;
-    private User rndUser;
     private static String accessToken;
     @BeforeClass
     public static void setUp() {
@@ -40,9 +38,9 @@ public class PatchUserChangeVerificationTest {
     //@DisplayName("Change user email and name | authorized")
     @Description("This test verifies that user email and name can be changed after authorization")
     @Severity(SeverityLevel.CRITICAL)
-    public void changeUserEmailAndNameAuthorized() throws Exception {
+    public void checkChangeUserEmailAndNameAuthorized() throws Exception {
         // Регистрируем нового пользователя
-        rndUser = generateRandomUser();
+        User rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
         // Получаем access token
         accessToken = baseSteps.loginUserAndGetToken(rndUser);
@@ -60,6 +58,6 @@ public class PatchUserChangeVerificationTest {
      */
     @After
     public void tearDown() throws Exception {
-        baseSteps.deleteRegisteredUser(rndUser, accessToken);
+        baseSteps.deleteRegisteredUser(accessToken);
     }
 }
