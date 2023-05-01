@@ -119,43 +119,60 @@ public class BaseSteps {
 
     @Step("Get user data and verify response | authorized")
     public void getUserAndVerifyResponse(User user, String accessToken) throws Exception {
-            given()
-                .header("Authorization", accessToken)
-            .when()
-                .get(EndPoints.USER_ENDPOINT)
-            .then()
-                .spec(successGetUserResponse(user.getEmail(), user.getName()));
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .get(EndPoints.USER_ENDPOINT)
+                .then()
+                    .spec(successGetUserResponse(user.getEmail(), user.getName()));
+    }
+
+    @Step("Check user is not found")
+    public void checkUserNotFound(String accessToken) throws Exception {
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .get(EndPoints.USER_ENDPOINT)
+                .then()
+                    .spec(userNotFoundResponse());
     }
 
     @Step("Change user email and name to new values")
     public void updateUserEmailAndName(User user, String newEmail, String newName, String accessToken) throws Exception{
-            given()
-                .header("Authorization", accessToken)
-            .when()
-                .body(user.setEmail(newEmail))
-                .body(user.setName(newName))
-                .patch(EndPoints.USER_ENDPOINT)
-            .then()
-                .spec(successGetUserResponse(user.getEmail(), user.getName()));
-    }
+                user.setEmail(newEmail);
+                user.setName(newName);
 
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .body(user)
+                    .patch(EndPoints.USER_ENDPOINT)
+                .then()
+                    .spec(successGetUserResponse(user.getEmail(), user.getName()));
+    }
+    @Step("Delete user")
+    public void deleteUser(String accessToken) throws Exception {
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .delete(EndPoints.USER_ENDPOINT)
+                .then()
+                    .spec(successDeleteRegisteredUserResponse());
+    }
 
     @Step("Delete user")
-    public void deleteRegisteredUser(User user, String accessToken) throws Exception {
-            given()
-                .header("Authorization", accessToken)
-            .when()
-                .delete(EndPoints.USER_ENDPOINT)
-            .then()
-                .spec(successdeleteRegisteredUserResponse());
+    public void deleteRegisteredUser(String accessToken) throws Exception {
+        deleteUser(accessToken);
+        checkUserNotFound(accessToken);
     }
 
+
     @Step("Create a new order")
-    public OrderResponse createNewOrder(String accessToken, OrderRequest orderReqJson) {
+    public OrderResponse createNewOrder(OrderRequest orderReqJson, String accessToken) {
 
         OrderResponse orderResponse =
                 given()
-                    .auth().oauth2(accessToken)
+                    .header("Authorization", accessToken)
                 .when()
                     .body(orderReqJson)
                     .post(EndPoints.ORDER_ENDPOINT)
