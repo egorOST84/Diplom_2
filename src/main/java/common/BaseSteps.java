@@ -4,7 +4,6 @@ import configs.EndPoints;
 import constants.ErrorMessage;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import pojo.*;
 
 import static io.restassured.RestAssured.given;
@@ -12,7 +11,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static specs.RestAssuredSpecs.*;
 
 public class BaseSteps {
-    private String accessToken;
     @Step("Send registration user request and get response")
     public Response sendRegistrationUserRequestAndGetResponse(User user) {
 
@@ -44,7 +42,7 @@ public class BaseSteps {
     }
 
     @Step("Send user update request and get response")
-    public Response sendPatchUserRequestAndGetResponse(User user, String newEmail, String newName, String accessToken) throws Exception {
+    public Response sendPatchUserRequestAndGetResponse(User user, String newEmail, String newName, String accessToken) {
 
         User updatedUser = new User();
         updatedUser.setEmail(newEmail);
@@ -63,6 +61,32 @@ public class BaseSteps {
         return response;
     }
 
+    @Step("Send order create request and get response")
+    public Response sendPostCreateOrderAndGetResponse(OrderRequest orderReqJson, String accessToken) {
+        Response response =
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .body(orderReqJson)
+                    .post(EndPoints.ORDER_ENDPOINT)
+                .then()
+                    .extract().response();
+
+        return response;
+    }
+
+    @Step("Send user update request and get response")
+    public Response sendGetOrderListAndGetResponse(String accessToken) {
+        Response response =
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .get(EndPoints.ORDER_ENDPOINT)
+                .then()
+                    .extract().response();
+        return response;
+    }
+
     @Step("Registration new user")
     public void registrationNewUserAndVerifyResponse(User user) {
                 given()
@@ -72,20 +96,6 @@ public class BaseSteps {
                 .then()
                     .spec(successUserResponse(user.getEmail(), user.getName()))
                     .extract().response().as(AuthResponse.class);
-    }
-    @Step("Registration new user and get access token")
-    public String registrationNewUserAndGetToken(User user) {
-
-        String accessToken =
-                given()
-                .when()
-                    .body(user)
-                    .post(EndPoints.REGISTRATION_ENDPOINT)
-                .then()
-                    .spec(successUserResponse(user.getEmail(), user.getName()))
-                    .extract().path("accessToken");
-
-        return accessToken;
     }
 
     @Step("User authentication")
@@ -99,7 +109,7 @@ public class BaseSteps {
     }
 
     @Step("User login and get access token")
-    public String loginUserAndGetToken(User user) throws Exception {
+    public String loginUserAndGetToken(User user) {
 
         String accessToken =
                 given()
@@ -110,15 +120,11 @@ public class BaseSteps {
                     .spec(successUserResponse(user.getEmail(), user.getName()))
                     .extract().path("accessToken");
 
-        if (accessToken == null || accessToken.isEmpty()) {
-            throw new RuntimeException("Access token is not found in the response body");
-        }
-
         return accessToken;
     }
 
     @Step("Get user data and verify response | authorized")
-    public void getUserAndVerifyResponse(User user, String accessToken) throws Exception {
+    public void getUserAndVerifyResponse(User user, String accessToken) {
                 given()
                     .header("Authorization", accessToken)
                 .when()
@@ -128,7 +134,7 @@ public class BaseSteps {
     }
 
     @Step("Check user is not found")
-    public void checkUserNotFound(String accessToken) throws Exception {
+    public void checkUserNotFound(String accessToken) {
                 given()
                     .header("Authorization", accessToken)
                 .when()
@@ -138,7 +144,7 @@ public class BaseSteps {
     }
 
     @Step("Change user email and name to new values")
-    public void updateUserEmailAndName(User user, String newEmail, String newName, String accessToken) throws Exception{
+    public void updateUserEmailAndName(User user, String newEmail, String newName, String accessToken) {
                 user.setEmail(newEmail);
                 user.setName(newName);
 
@@ -151,7 +157,7 @@ public class BaseSteps {
                     .spec(successGetUserResponse(user.getEmail(), user.getName()));
     }
     @Step("Delete user")
-    public void deleteUser(String accessToken) throws Exception {
+    public void deleteUser(String accessToken) {
                 given()
                     .header("Authorization", accessToken)
                 .when()
@@ -161,94 +167,45 @@ public class BaseSteps {
     }
 
     @Step("Delete user")
-    public void deleteRegisteredUser(String accessToken) throws Exception {
+    public void deleteRegisteredUser(String accessToken) {
         deleteUser(accessToken);
         checkUserNotFound(accessToken);
     }
 
 
     @Step("Create a new order")
-    public OrderResponse createNewOrder(OrderRequest orderReqJson, String accessToken) {
+    public void createNewOrderAndVerifyResponse(OrderRequest orderReqJson, String accessToken) {
 
-        OrderResponse orderResponse =
                 given()
                     .header("Authorization", accessToken)
                 .when()
                     .body(orderReqJson)
                     .post(EndPoints.ORDER_ENDPOINT)
                 .then()
-                    .assertThat().body("success", equalTo(true))
+                    .spec(successOrderResponse())
                     .extract().response().as(OrderResponse.class);
-
-        return orderResponse;
     }
 
+    @Step("Get order list")
+    public void getOrderListAndVerifyResponse( String accessToken) {
+                given()
+                    .header("Authorization", accessToken)
+                .when()
+                    .get(EndPoints.ORDER_ENDPOINT)
+                .then()
+                    .spec(successOrderListResponse())
+                .extract().response().as(OrderList.class);
+    }
 
-
-//    @Step("Get order track number")
-//    public OrderCancelRequest createNewOrderAndGetTrack(OrderRequest orderReq) {
-//
-//        OrderCancelRequest orderCancelRequest =
-//                given()
-//                .when()
-//                    .body(orderReq)
-//                    .post(EndPoints.orders)
-//                .then()
-//                    .assertThat().body("track", notNullValue())
-//                .extract().response().as(OrderCancelRequest.class);
-//        return orderCancelRequest;
-//    }
-//
-//    @Step("Cancel existing order by track number")
-//    public void cancelOrder(OrderCancelRequest jsonBody) {
-//
-//                given()
-//                .when()
-//                    .body(jsonBody)
-//                    .put(EndPoints.orderCancel)
-//                .then()
-//                    .statusCode(HttpStatus.SC_OK);
-//    }
-//    @Step("Get order list")
-//    public OrderListResponse getOrderList() {
-//
-//        OrderListResponse orderListResponse =
-//                given()
-//                .when()
-//                    .get(EndPoints.orders)
-//                .then()
-//                    .extract().response().as(OrderListResponse.class);
-//        return orderListResponse;
-//    }
-//
-//    @Step("Get order list with params")
-//    public Response getOrderListWithParams(Integer courierId, String nearestStation, Integer limit, Integer page) {
-//
-//        RequestSpecification requestSpec = given()
-//                .queryParams("courierId", courierId != null ? courierId : "")
-//                .queryParams("nearestStation", nearestStation != null ? nearestStation : "")
-//                .queryParams("limit", limit != null ? limit : "")
-//                .queryParams("page", page != null ? page : "");
-//
-//        Response response = requestSpec.get(EndPoints.orders).then().extract().response();
-//        return response;
-//    }
-//
-//
     @Step ("Check response for invalid parameters")
-    public void checkResponse(Response response, ErrorMessage errorMessage) throws Exception {
+    public void checkErrorMessage(Response response, ErrorMessage errorMessage) throws Exception {
 
         String message = errorMessage.getDescription();
 
-        switch (response.statusCode()) {
-            case HttpStatus.SC_UNAUTHORIZED:
-            case HttpStatus.SC_FORBIDDEN:
-                response.then().assertThat().body("message", equalTo(message));
-                break;
-            default:
-                throw new Exception("Unknown status code or message");
+        try {
+            response.then().assertThat().body("message", equalTo(message));
+        } catch (Exception e) {
+            throw new Exception("Unknown status code or message");
         }
     }
-
-
 }
