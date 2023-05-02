@@ -6,7 +6,9 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,36 +29,27 @@ public class PostCreateUserValidationExistingUserTest {
     }
 
     /**
-     * Этот тест проверяет, что при попытке создания пользователя с уже существующим именем возвращается ошибка с кодом 403 (запрещено).
+     * В методе tearDown() происходит удаление созданного тестом пользователя.
+     */
+    @After
+    public void tearDown() {
+        String accessToken = baseSteps.loginUserAndGetToken(rndUser);
+        baseSteps.deleteRegisteredUser(accessToken);
+    }
 
-     * В этом тесте сначала создается новый пользователь (rndUser) с помощью метода generateRandomUser(),
-     * затем создание пользователя происходит с помощью метода registrationNewUserAndVerifyResponse(rndUser),
-     * чтобы убедиться, что пользователь успешно создан.
-
-     * Затем повторно отправляется запрос на создание пользователя с тем же именем, и ожидается,
-     * что в ответе вернется ошибка с кодом 403 (запрещено), согласно описанию теста.
+    /**
+     * Этот тест проверяет, что при попытке создания пользователя с уже существующим именем возвращается ошибка с кодом 403.
      */
 
     @Test
-    //@DisplayName("User registration / \"with existing name\" validation / negative")
+    @DisplayName("User registration / \"with existing name\" validation / negative")
     @Description("This test verifies that user with existing name cannot be created")
     @Severity(SeverityLevel.BLOCKER)
     public void validateCreateNewUserWithExistingName() throws Exception {
         rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
         Response response = baseSteps.sendRegistrationUserRequestAndGetResponse(rndUser);
-        baseSteps.checkResponse(response, ErrorMessage.USER_CREATE_SECOND_ATTEMPT_ERROR_403);
-    }
-
-    /**
-     * В методе tearDown() происходит удаление созданного тестом пользователя,
-     * которого мы зарегистрировали ранее в методе createNewUserWithExistingName().
-     * Для этого сначала получается accessToken пользователя с помощью метода loginUserAndGetToken(),
-     * затем этот токен используется для вызова метода deleteRegisteredUser(), который отправляет запрос на удаление пользователя на сервере.
-     */
-    @After
-    public void tearDown() throws Exception {
-        String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(accessToken);
+        response.then().statusCode(HttpStatus.SC_FORBIDDEN);
+        baseSteps.checkErrorMessage(response, ErrorMessage.USER_CREATE_SECOND_ATTEMPT_ERROR_403);
     }
 }

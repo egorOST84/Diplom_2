@@ -6,7 +6,9 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,24 +27,22 @@ import static utilities.UserGenerator.generateRandomUser;
 public class PostLoginUserInvalidCredentialsTest {
     private final String email;
     private final String password;
-    private final ErrorMessage errorMessage;
     private static BaseSteps baseSteps;
 
-    public PostLoginUserInvalidCredentialsTest(String description, String email, String password, ErrorMessage errorMessage) {
+    public PostLoginUserInvalidCredentialsTest(String description, String email, String password) {
         this.email = email;
         this.password = password;
-        this.errorMessage = errorMessage;
     }
 
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Collection<Object[]> getData() {
         return Stream.of(
-                new Object[]{"invalid email", "invalid_email", generateRandomUser().getPassword(), ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401},
-                new Object[]{"email field is missing", null, generateRandomUser().getPassword(), ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401},
-                new Object[]{"invalid password", generateRandomUser().getEmail(), "invalid_password", ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401},
-                new Object[]{"password field is missing", generateRandomUser().getEmail(), null, ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401},
-                new Object[]{"all fields are missing", null, null, ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401},
-                new Object[]{"with unexciting user name", generateRandomUser().getEmail(),  generateRandomUser().getPassword(), ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401}
+                new Object[]{"invalid email", "invalid_email", generateRandomUser().getPassword()},
+                new Object[]{"email field is missing", null, generateRandomUser().getPassword()},
+                new Object[]{"invalid password", generateRandomUser().getEmail(), "invalid_password"},
+                new Object[]{"password field is missing", generateRandomUser().getEmail(), null},
+                new Object[]{"all fields are missing", null, null},
+                new Object[]{"with unexciting user name", generateRandomUser().getEmail(),  generateRandomUser().getPassword()}
         ).collect(Collectors.toList());
     }
 
@@ -54,22 +54,17 @@ public class PostLoginUserInvalidCredentialsTest {
     }
 
     /**
-     * @throws Exception
-     *
-     * Этот тест проверяет поведение системы при попытке входа пользователя с неверными учетными данными.
-     * В методе теста loginUserWithInvalidCredentials() сначала создается объект User с некоторыми корректными данными,
-     * такими как email и password, но с неправильным именем пользователя.
-     * Затем отправляется запрос на вход с этими учетными данными, и полученный ответ проверяется на соответствие ожидаемому.
-     * Если ответ содержит ожидаемое сообщение об ошибке, то тест считается пройденным, иначе он не пройден.
+     * Этот тест проверяет что нельзя авторизоваться с неверными учетными данными.
      */
 
     @Test
-    //@DisplayName("User login / \"with invalid credentials\" validation / negative")
+    @DisplayName("User login / \"with invalid credentials\" validation / negative")
     @Description("This test verifies that user with invalid credentials cannot be logged")
     @Severity(SeverityLevel.BLOCKER)
     public void validateLoginUserWithInvalidCredentials() throws Exception {
         User user = new User(email, generateRandomUser().getName(), password);
         Response response = baseSteps.sendLoginUserRequestAndGetResponse(user);
-        baseSteps.checkResponse(response, errorMessage);
+        response.then().statusCode(HttpStatus.SC_UNAUTHORIZED);
+        baseSteps.checkErrorMessage(response, ErrorMessage.USER_LOGIN_UNAUTHORIZED_ERROR_401);
     }
 }

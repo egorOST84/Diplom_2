@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.List;
 import static specs.RestAssuredSpecs.*;
 import static utilities.OrderGenerator.generateRandomOrder;
 
-@Feature("[Create order] POST api/orders")
+@Feature("[Create order] POST api/orders - validation / negative")
 public class PostCreateOrderValidationTest {
     private static BaseSteps baseSteps;
 
@@ -28,8 +29,12 @@ public class PostCreateOrderValidationTest {
         baseSteps = new BaseSteps();
     }
 
+    /**
+     * Этот тест проверяет, что заказ не может быть создан без указания ингредиентов.
+     */
+
     @Test
-    //@DisplayName("Create order / \"without ingredients\" validation / negative")
+    @DisplayName("Create order / \"without ingredients\" validation / negative")
     @Description("Verify that order cannot be created without ingredients")
     @Severity(SeverityLevel.CRITICAL)
     public void validateCreateOrderWithoutIngredients() throws Exception {
@@ -42,14 +47,18 @@ public class PostCreateOrderValidationTest {
         baseSteps.checkErrorMessage(response, ErrorMessage.CREATE_ORDER_WITHOUT_INGREDIENTS_ERROR_400);
     }
 
+    /**
+     * Данный тест проверяет валидацию хешей ингредиентов при создании заказа.
+     */
+
     @Test
-    //@DisplayName("Create order / \"invalid ingredient hash\" validation / negative")
+    @DisplayName("Create order / \"invalid ingredient hash\" validation / negative")
     @Description("Verify that order cannot be created with invalid ingredient hash")
     @Severity(SeverityLevel.CRITICAL)
-    public void validateCreateOrderWithInvalidIngredientHash() throws Exception {
+    public void validateCreateOrderWithInvalidIngredientHash() {
         // Попытка создать заказ без ингредиентов
-        OrderRequest orderReq = generateRandomOrder(2);
-        orderReq.setIngredients(List.of("invalid hash", "_@#$%&^!%"));
+        OrderRequest orderReq = generateRandomOrder(3);
+        orderReq.setIngredients(List.of("invalid hash", "_@#$%&^!%", ""));
         Response response = baseSteps.sendPostCreateOrderAndGetResponse(orderReq, "");
         // Проверяем, что код ответа 500 Internal error
         response.then().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);

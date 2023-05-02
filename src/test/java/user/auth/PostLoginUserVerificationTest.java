@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,30 +25,24 @@ public class PostLoginUserVerificationTest {
     }
 
     /**
+     * В методе tearDown() происходит удаление созданного тестом пользователя.
+     */
+    @After
+    public void tearDown() {
+        String accessToken = baseSteps.loginUserAndGetToken(rndUser);
+        baseSteps.deleteRegisteredUser(accessToken);
+    }
+
+    /**
      * Этот тест проверяет возможность входа пользователя в систему после его регистрации.
-     * Сначала в тесте создается случайный пользователь rndUser, затем выполняется регистрация
-     * этого пользователя при помощи registrationNewUserAndVerifyResponse и проверяется, что регистрация прошла успешно.
-     * После этого выполняется вход пользователя в систему при помощи метода loginUser и проверяется, что пользователь успешно авторизовался.
      */
     @Test
-    //@DisplayName("User login")
+    @DisplayName("User login")
     @Description("This test verifies that user can be logged after it's registration")
     @Severity(SeverityLevel.BLOCKER)
     public void checkLoginUser() {
         rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
         baseSteps.loginUser(rndUser);
-    }
-
-    /**
-     * В методе tearDown() происходит удаление созданного тестом пользователя,
-     * которого мы зарегистрировали ранее в методе loginUser().
-     * Для этого сначала получается accessToken пользователя с помощью метода loginUserAndGetToken(),
-     * затем этот токен используется для вызова метода deleteRegisteredUser(), который отправляет запрос на удаление пользователя на сервере.
-     */
-    @After
-    public void tearDown() throws Exception {
-        String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(accessToken);
     }
 }
