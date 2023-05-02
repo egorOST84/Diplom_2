@@ -84,37 +84,31 @@ public class RestAssuredSpecs {
                 .build();
     }
 
-    public static ResponseSpecification failureJwtResponse() {
-        return new ResponseSpecBuilder()
-                .expectContentType(ContentType.JSON)
-                .expectStatusCode(HttpStatus.SC_FORBIDDEN)
-                .expectBody("success", is(false))
-                .expectBody("message", equalTo("jwt expired"))
-                .log(LogDetail.ALL)
-                .build();
-    }
+    public static ResponseSpecification successOrderResponse() {
 
-    public static ResponseSpecification responseSpecCreateOrderVerified() {
         return new ResponseSpecBuilder()
                 .expectContentType(ContentType.JSON)
                 .expectStatusCode(HttpStatus.SC_OK)
-                .expectBody("$", Matchers.hasKey("name"))
+                .expectBody("success", is(true))
+                .expectBody("name", notNullValue())
+                .expectBody("order.number", notNullValue())
                 .log(LogDetail.ALL)
                 .build();
     }
 
-//    public static ResponseSpecification responseSpecOrderListVerified() {
-//        return new ResponseSpecBuilder()
-//                .expectContentType(ContentType.JSON)
-//                .expectStatusCode(HttpStatus.SC_OK)
-//                .expectBody("$", Matchers.allOf(
-//                    Matchers.hasKey("orders"),
-//                    Matchers.hasKey("pageInfo"),
-//                    Matchers.hasKey("availableStations")
-//                ))
-//                .log(LogDetail.ALL)
-//                .build();
-//    }
+    public static ResponseSpecification successOrderListResponse() {
+
+        return new ResponseSpecBuilder()
+                .expectContentType(ContentType.JSON)
+                .expectStatusCode(HttpStatus.SC_OK)
+                .expectBody("success", is(true))
+                .expectBody("orders", notNullValue())
+                .expectBody("orders", hasSize(lessThanOrEqualTo(50)))
+                .expectBody("total", notNullValue())
+                .expectBody("totalToday", notNullValue())
+                .log(LogDetail.ALL)
+                .build();
+    }
 
     public static void setUpSpec(RequestSpecification request, ResponseSpecification response) {
         RestAssured.requestSpecification = request;
