@@ -23,6 +23,10 @@ public class Ingredient {
     public Ingredient() {
     }
 
+    public Ingredient(String id) {
+        this.id = id;
+    }
+
     public Ingredient(String id, String name, String type, Long proteins, Long fat, Long carbohydrates, Long calories, Long price, String image, String imageMobile, String imageLarge, Long v, Long v1) {
         super();
         this.id = id;

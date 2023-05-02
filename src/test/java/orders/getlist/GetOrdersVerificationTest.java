@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.BeforeClass;
@@ -31,10 +32,10 @@ public class GetOrdersVerificationTest {
      * Этот тест проверяет, что после авторизации пользователь может получить список своих заказов.
      */
     @Test
-    //@DisplayName("Get orders | authorized")
+    @DisplayName("Get orders | authorized")
     @Description("This test verifies that  after authorization")
     @Severity(SeverityLevel.BLOCKER)
-    public void checkCreateOrderForAuthorizedUser() throws Exception {
+    public void checkCreateOrderForAuthorizedUser() {
         // Регистрируем нового пользователя
         User rndUser = generateRandomUser();
         baseSteps.registrationNewUserAndVerifyResponse(rndUser);
@@ -42,7 +43,7 @@ public class GetOrdersVerificationTest {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
         // Создаем заказ с авторизацией и ожидаем успешный ответ
         OrderRequest orderReq = generateRandomOrder(2);
-        baseSteps.createNewOrder(orderReq, accessToken);
+        baseSteps.createNewOrderAndVerifyResponse(orderReq, accessToken);
         // Проверяем что список заказов успешно получен
         baseSteps.getOrderListAndVerifyResponse(accessToken);
         // Удаляем пользователя
@@ -53,7 +54,7 @@ public class GetOrdersVerificationTest {
      * Этот тест проверяет, что для неавторизованного пользователя невозможно получить список заказов.
      */
     @Test
-    //@DisplayName("Get orders | unauthorized")
+    @DisplayName("Get orders | unauthorized")
     @Description("Verify that unauthorized user cannot get order list")
     @Severity(SeverityLevel.BLOCKER)
     public void checkGetOrderListUnauthorizedUser() throws Exception {
