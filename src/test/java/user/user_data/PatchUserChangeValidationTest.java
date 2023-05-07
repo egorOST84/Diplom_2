@@ -30,7 +30,7 @@ public class PatchUserChangeValidationTest extends BaseTest {
     public void validateChangeUserEmailAndNameUnauthorized() throws Exception {
         // Регистрируем нового пользователя
         rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         // Попытка изменить адрес электронной почты и имя пользователя без предоставления токена доступа
         Response response = baseSteps.sendPatchUserRequestAndGetResponse(rndUser, "newEmail", "newName", "");
         // Проверяем, что код ответа 401 Unauthorized, а сообщение ответа соответствует ожидаемому сообщению об ошибке.
@@ -49,10 +49,10 @@ public class PatchUserChangeValidationTest extends BaseTest {
     public void validateChangeUserEmailWithExistingEmail() throws Exception {
         // Регистрируем нового пользователя
         rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         // Регистрируем второго пользователя
         User rndSecondUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndSecondUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndSecondUser);
         // Берем email rndUser и сохраняем в переменную
         String newSecondUserEmail = rndUser.getEmail();
         // Получаем access token второго пользователя

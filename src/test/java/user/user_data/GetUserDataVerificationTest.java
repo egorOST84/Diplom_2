@@ -26,7 +26,7 @@ public class GetUserDataVerificationTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void checkGetUserDataAuthorized() {
         User rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         accessToken = baseSteps.loginUserAndGetToken(rndUser);
         baseSteps.getUserAndVerifyResponse(rndUser, accessToken);
     }

@@ -28,8 +28,8 @@ public class PostCreateUserValidationExistingUserTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void validateCreateNewUserWithExistingName() throws Exception {
         rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
-        Response response = baseSteps.sendRegistrationUserRequestAndGetResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
+        Response response = registrationSteps.sendRegistrationUserRequestAndGetResponse(rndUser);
         response.then().statusCode(HttpStatus.SC_FORBIDDEN);
         baseSteps.checkErrorMessage(response, ErrorMessage.USER_CREATE_SECOND_ATTEMPT_ERROR_403);
     }

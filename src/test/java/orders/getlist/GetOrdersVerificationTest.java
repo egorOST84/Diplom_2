@@ -29,7 +29,7 @@ public class GetOrdersVerificationTest extends BaseTest {
     public void checkCreateOrderForAuthorizedUser() {
         // Регистрируем нового пользователя
         User rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         // Получаем access token
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
         // Создаем заказ с авторизацией и ожидаем успешный ответ

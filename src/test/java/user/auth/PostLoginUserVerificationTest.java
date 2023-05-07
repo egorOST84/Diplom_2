@@ -25,7 +25,7 @@ public class PostLoginUserVerificationTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void checkLoginUser() {
         rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         baseSteps.loginUser(rndUser);
     }
 

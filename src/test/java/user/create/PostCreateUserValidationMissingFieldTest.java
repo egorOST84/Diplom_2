@@ -53,7 +53,7 @@ public class PostCreateUserValidationMissingFieldTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void validateCreateNewUserWithMissingField() throws Exception {
         User user = new User(email, name, password);
-        Response response = baseSteps.sendRegistrationUserRequestAndGetResponse(user);
+        Response response = registrationSteps.sendRegistrationUserRequestAndGetResponse(user);
         response.then().statusCode(HttpStatus.SC_FORBIDDEN);
         baseSteps.checkErrorMessage(response, ErrorMessage.USER_CREATE_MISSING_FIELDS_ERROR_403);
     }

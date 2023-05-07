@@ -26,7 +26,7 @@ public class PatchUserChangeVerificationTest extends BaseTest {
     public void checkChangeUserEmailAndNameAuthorized() {
         // Регистрируем нового пользователя
         User rndUser = generateRandomUser();
-        baseSteps.registrationNewUserAndVerifyResponse(rndUser);
+        registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         // Получаем access token
         accessToken = baseSteps.loginUserAndGetToken(rndUser);
         // Обновляем email и имя пользователя
