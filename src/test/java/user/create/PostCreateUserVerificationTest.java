@@ -34,6 +34,6 @@ public class PostCreateUserVerificationTest extends BaseTest {
     @After
     public void tearDown() {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 }

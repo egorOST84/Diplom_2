@@ -33,7 +33,7 @@ public class PostCreateTestVerificationTest extends BaseTest {
         OrderRequest orderReq = generateRandomOrder(2);
         baseSteps.createNewOrderAndVerifyResponse(orderReq, accessToken);
         // Удаляем пользователя
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 
     /**

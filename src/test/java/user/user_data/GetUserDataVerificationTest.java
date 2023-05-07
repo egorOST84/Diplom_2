@@ -28,7 +28,7 @@ public class GetUserDataVerificationTest extends BaseTest {
         User rndUser = generateRandomUser();
         registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.getUserAndVerifyResponse(rndUser, accessToken);
+        userSteps.getUserAndVerifyResponse(rndUser, accessToken);
     }
 
     /**
@@ -36,6 +36,6 @@ public class GetUserDataVerificationTest extends BaseTest {
      */
     @After
     public void tearDown() {
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 }

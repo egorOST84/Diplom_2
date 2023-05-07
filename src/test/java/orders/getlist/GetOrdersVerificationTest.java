@@ -38,7 +38,7 @@ public class GetOrdersVerificationTest extends BaseTest {
         // Проверяем что список заказов успешно получен
         baseSteps.getOrderListAndVerifyResponse(accessToken);
         // Удаляем пользователя
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 
     /**

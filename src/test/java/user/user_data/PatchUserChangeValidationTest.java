@@ -63,7 +63,7 @@ public class PatchUserChangeValidationTest extends BaseTest {
         response.then().statusCode(HttpStatus.SC_FORBIDDEN);
         baseSteps.checkErrorMessage(response, ErrorMessage.USER_UPDATE_EXISTING_EMAIL_ERROR_403);
         // Удаляем второго пользователя
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 
     /**
@@ -72,6 +72,6 @@ public class PatchUserChangeValidationTest extends BaseTest {
     @After
     public void tearDown() {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 }

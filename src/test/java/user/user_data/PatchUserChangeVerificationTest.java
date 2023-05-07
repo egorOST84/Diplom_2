@@ -34,7 +34,7 @@ public class PatchUserChangeVerificationTest extends BaseTest {
         String newName = "new_" + rndUser.getName();
         baseSteps.updateUserEmailAndName(rndUser, newEmail, newName, accessToken);
         // Проверяем, что email и имя пользователя были успешно обновлены
-        baseSteps.getUserAndVerifyResponse(rndUser, accessToken);
+        userSteps.getUserAndVerifyResponse(rndUser, accessToken);
     }
 
     /**
@@ -42,6 +42,6 @@ public class PatchUserChangeVerificationTest extends BaseTest {
      */
     @After
     public void tearDown() {
-        baseSteps.deleteRegisteredUser(accessToken);
+        userSteps.deleteRegisteredUser(accessToken);
     }
 }
