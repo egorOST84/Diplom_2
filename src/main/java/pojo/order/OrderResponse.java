@@ -1,4 +1,4 @@
-package pojo;
+package pojo.order;
 
 public class OrderResponse {
     private Boolean success;

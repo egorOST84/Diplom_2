@@ -1,4 +1,4 @@
-package pojo;
+package pojo.order;
 
 import java.util.List;
 

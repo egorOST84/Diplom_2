@@ -1,7 +1,10 @@
-package pojo;
+package pojo.order;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pojo.Ingredient;
+import pojo.user.Owner;
+
 public class Order {
     private List<Ingredient> ingredients;
     @JsonProperty("_id")
