@@ -1,5 +1,7 @@
 package pojo;
 
+import pojo.user.User;
+
 public class AuthResponse {
     private Boolean success;
     private String accessToken;
