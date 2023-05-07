@@ -1,6 +1,5 @@
 package user.create;
 
-import common.BaseSteps;
 import constants.ErrorMessage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -8,27 +7,25 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import common.BaseTest;
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import pojo.User;
+import pojo.user.User;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static specs.RestAssuredSpecs.*;
 import static utilities.UserGenerator.generateRandomUser;
 
 @Feature("[User registration] POST api/auth/register - \"fields\" validation / negative")
 @RunWith(Parameterized.class)
-public class PostCreateUserValidationMissingFieldTest {
+public class PostCreateUserValidationMissingFieldTest extends BaseTest {
     private final String email;
     private final String name;
     private final String password;
-    private static BaseSteps baseSteps;
 
     public PostCreateUserValidationMissingFieldTest(String description, String email, String name, String password) {
         this.email = email;
@@ -44,13 +41,6 @@ public class PostCreateUserValidationMissingFieldTest {
                 new Object[]{"password field is missing", generateRandomUser().getEmail(), generateRandomUser().getName(), null},
                 new Object[]{"all fields are missing", null, null, null}
         ).collect(Collectors.toList());
-    }
-
-
-    @BeforeClass
-    public static void setUp() {
-        setUpSpec(requestSpec(), responseSpec());
-        baseSteps = new BaseSteps();
     }
 
     /**

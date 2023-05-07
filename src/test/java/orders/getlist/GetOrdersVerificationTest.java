@@ -1,6 +1,5 @@
 package orders.getlist;
 
-import common.BaseSteps;
 import constants.ErrorMessage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -8,25 +7,17 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import common.BaseTest;
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import pojo.OrderRequest;
-import pojo.User;
+import pojo.order.OrderRequest;
+import pojo.user.User;
 
-import static specs.RestAssuredSpecs.*;
 import static utilities.OrderGenerator.generateRandomOrder;
 import static utilities.UserGenerator.generateRandomUser;
 
 @Feature("[Get orders] GET api/orders")
-public class GetOrdersVerificationTest {
-    private static BaseSteps baseSteps;
-
-    @BeforeClass
-    public static void setUp() throws Exception {
-        setUpSpec(requestSpec(), responseSpec());
-        baseSteps = new BaseSteps();
-    }
+public class GetOrdersVerificationTest extends BaseTest {
 
     /**
      * Этот тест проверяет, что после авторизации пользователь может получить список своих заказов.

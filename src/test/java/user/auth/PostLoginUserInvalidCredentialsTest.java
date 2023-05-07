@@ -1,6 +1,5 @@
 package user.auth;
 
-import common.BaseSteps;
 import constants.ErrorMessage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -8,26 +7,24 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import common.BaseTest;
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import pojo.User;
+import pojo.user.User;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static specs.RestAssuredSpecs.*;
 import static utilities.UserGenerator.generateRandomUser;
 
 @Feature("[User authorization] POST api/auth/login - \"credentials\" validation / negative")
 @RunWith(Parameterized.class)
-public class PostLoginUserInvalidCredentialsTest {
+public class PostLoginUserInvalidCredentialsTest extends BaseTest {
     private final String email;
     private final String password;
-    private static BaseSteps baseSteps;
 
     public PostLoginUserInvalidCredentialsTest(String description, String email, String password) {
         this.email = email;
@@ -46,17 +43,9 @@ public class PostLoginUserInvalidCredentialsTest {
         ).collect(Collectors.toList());
     }
 
-
-    @BeforeClass
-    public static void setUp() {
-        setUpSpec(requestSpec(), responseSpec());
-        baseSteps = new BaseSteps();
-    }
-
     /**
      * Этот тест проверяет что нельзя авторизоваться с неверными учетными данными.
      */
-
     @Test
     @DisplayName("User login / \"with invalid credentials\" validation / negative")
     @Description("This test verifies that user with invalid credentials cannot be logged")

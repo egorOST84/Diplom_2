@@ -1,28 +1,20 @@
 package orders.create;
 
-import common.BaseSteps;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
+import common.BaseTest;
 import org.junit.*;
-import pojo.OrderRequest;
-import pojo.User;
+import pojo.order.OrderRequest;
+import pojo.user.User;
 
 import static utilities.OrderGenerator.generateRandomOrder;
-import static specs.RestAssuredSpecs.*;
 import static utilities.UserGenerator.generateRandomUser;
 
 @Feature("[Create order] POST api/orders")
-public class PostCreateOrderVerificationTest {
-    private static BaseSteps baseSteps;
-
-    @BeforeClass
-    public static void setUp() throws Exception {
-        setUpSpec(requestSpec(), responseSpec());
-        baseSteps = new BaseSteps();
-    }
+public class PostCreateTestVerificationTest extends BaseTest {
 
     /**
      * Этот тест проверяет, что заказ может быть создан после авторизации пользователя.

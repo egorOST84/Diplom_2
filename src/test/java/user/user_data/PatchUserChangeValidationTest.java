@@ -1,6 +1,5 @@
 package user.user_data;
 
-import common.BaseSteps;
 import constants.ErrorMessage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -8,39 +7,22 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import common.BaseTest;
 import org.apache.http.HttpStatus;
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import pojo.User;
+import pojo.user.User;
 
-import static specs.RestAssuredSpecs.*;
 import static utilities.UserGenerator.generateRandomUser;
 
 @Feature("[User] PATCH api/auth/user - validation / negative")
-public class PatchUserChangeValidationTest {
-    private static BaseSteps baseSteps;
+public class PatchUserChangeValidationTest extends BaseTest {
     private User rndUser;
-    @BeforeClass
-    public static void setUp() {
-        setUpSpec(requestSpec(), responseSpec());
-        baseSteps = new BaseSteps();
-    }
-
-    /**
-     * В методе tearDown() происходит удаление созданного тестом пользователя.
-     */
-    @After
-    public void tearDown() {
-        String accessToken = baseSteps.loginUserAndGetToken(rndUser);
-        baseSteps.deleteRegisteredUser(accessToken);
-    }
 
     /**
      * Этот тест проверяет, что при попытке изменить электронную почту и имя пользователя без авторизации
      * должен быть получен ответ с кодом 401 Unauthorized.
      */
-
     @Test
     @DisplayName("Update user / \"without authorization\" validation / negative")
     @Description("Verify that attempting to change a user's email and name without authorization results in a 401 error")
@@ -81,6 +63,15 @@ public class PatchUserChangeValidationTest {
         response.then().statusCode(HttpStatus.SC_FORBIDDEN);
         baseSteps.checkErrorMessage(response, ErrorMessage.USER_UPDATE_EXISTING_EMAIL_ERROR_403);
         // Удаляем второго пользователя
+        baseSteps.deleteRegisteredUser(accessToken);
+    }
+
+    /**
+     * В методе tearDown() происходит удаление созданного тестом пользователя.
+     */
+    @After
+    public void tearDown() {
+        String accessToken = baseSteps.loginUserAndGetToken(rndUser);
         baseSteps.deleteRegisteredUser(accessToken);
     }
 }
