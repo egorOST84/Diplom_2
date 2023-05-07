@@ -1,7 +1,6 @@
 package constants;
 
 public enum ErrorMessage {
-    // User
     CREATE_ORDER_WITHOUT_INGREDIENTS_ERROR_400("Ingredient ids must be provided"),
     USER_LOGIN_UNAUTHORIZED_ERROR_401("email or password are incorrect"),
     USER_UPDATE_UNAUTHORIZED_ERROR_401("You should be authorised"),
