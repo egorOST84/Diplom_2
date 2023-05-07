@@ -1,14 +1,13 @@
 package utilities;
 
 import pojo.Ingredient;
-import pojo.OrderRequest;
+import pojo.order.OrderRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderGenerator {
     public static OrderRequest generateRandomOrder(int numberOfIngredients) {
-
         List<String> ingredients = new ArrayList<>();
 
         for (int i = 0; i < numberOfIngredients; i++) {
