@@ -34,9 +34,9 @@ public class GetOrdersVerificationTest extends BaseTest {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
         // Создаем заказ с авторизацией и ожидаем успешный ответ
         OrderRequest orderReq = generateRandomOrder(2);
-        baseSteps.createNewOrderAndVerifyResponse(orderReq, accessToken);
+        orderSteps.createNewOrderAndVerifyResponse(orderReq, accessToken);
         // Проверяем что список заказов успешно получен
-        baseSteps.getOrderListAndVerifyResponse(accessToken);
+        orderSteps.getOrderListAndVerifyResponse(accessToken);
         // Удаляем пользователя
         userSteps.deleteRegisteredUser(accessToken);
     }
@@ -50,7 +50,7 @@ public class GetOrdersVerificationTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void checkGetOrderListUnauthorizedUser() throws Exception {
         // Получаем список заказов без авторизации и ожидаем код ответа 401 Unauthorized
-        Response response = baseSteps.sendGetOrderListAndGetResponse("");
+        Response response = orderSteps.sendGetOrderListAndGetResponse("");
         response.then().statusCode(HttpStatus.SC_UNAUTHORIZED);
         baseSteps.checkErrorMessage(response, ErrorMessage.GET_ORDER_UNAUTHORIZED_ERROR_401);
     }

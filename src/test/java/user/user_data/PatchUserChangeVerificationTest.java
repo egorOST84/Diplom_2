@@ -32,7 +32,7 @@ public class PatchUserChangeVerificationTest extends BaseTest {
         // Обновляем email и имя пользователя
         String newEmail = "new_" + rndUser.getEmail();
         String newName = "new_" + rndUser.getName();
-        baseSteps.updateUserEmailAndName(rndUser, newEmail, newName, accessToken);
+        userSteps.updateUserEmailAndName(rndUser, newEmail, newName, accessToken);
         // Проверяем, что email и имя пользователя были успешно обновлены
         userSteps.getUserAndVerifyResponse(rndUser, accessToken);
     }

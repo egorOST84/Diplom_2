@@ -31,7 +31,7 @@ public class PostCreateTestVerificationTest extends BaseTest {
         String accessToken = baseSteps.loginUserAndGetToken(rndUser);
         // Создаем заказ с авторизацией и ожидаем успешный ответ
         OrderRequest orderReq = generateRandomOrder(2);
-        baseSteps.createNewOrderAndVerifyResponse(orderReq, accessToken);
+        orderSteps.createNewOrderAndVerifyResponse(orderReq, accessToken);
         // Удаляем пользователя
         userSteps.deleteRegisteredUser(accessToken);
     }
@@ -46,6 +46,6 @@ public class PostCreateTestVerificationTest extends BaseTest {
     public void checkCreateOrderUnauthorizedUser() {
         // Создаем заказ без авторизации и ожидаем успешный ответ
         OrderRequest orderReq = generateRandomOrder(2);
-        baseSteps.createNewOrderAndVerifyResponse(orderReq, "");
+        orderSteps.createNewOrderAndVerifyResponse(orderReq, "");
     }
 }

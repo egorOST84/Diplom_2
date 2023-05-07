@@ -31,7 +31,7 @@ public class PostCreateTestValidationTest extends BaseTest {
         // Попытка создать заказ без ингредиентов
         OrderRequest orderReq = generateRandomOrder(2);
         orderReq.setIngredients(List.of());
-        Response response = baseSteps.sendPostCreateOrderAndGetResponse(orderReq, "");
+        Response response = orderSteps.sendPostCreateOrderAndGetResponse(orderReq, "");
         // Проверяем, что код ответа 400 Bad request, а сообщение ответа соответствует ожидаемому сообщению об ошибке.
         response.then().statusCode(HttpStatus.SC_BAD_REQUEST);
         baseSteps.checkErrorMessage(response, ErrorMessage.CREATE_ORDER_WITHOUT_INGREDIENTS_ERROR_400);
@@ -48,7 +48,7 @@ public class PostCreateTestValidationTest extends BaseTest {
         // Попытка создать заказ без ингредиентов
         OrderRequest orderReq = generateRandomOrder(3);
         orderReq.setIngredients(List.of("invalid hash", "_@#$%&^!%", ""));
-        Response response = baseSteps.sendPostCreateOrderAndGetResponse(orderReq, "");
+        Response response = orderSteps.sendPostCreateOrderAndGetResponse(orderReq, "");
         // Проверяем, что код ответа 500 Internal error
         response.then().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         response.then().contentType(ContentType.HTML);

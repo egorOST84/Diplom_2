@@ -32,7 +32,7 @@ public class PatchUserChangeValidationTest extends BaseTest {
         rndUser = generateRandomUser();
         registrationSteps.registrationNewUserAndVerifyResponse(rndUser);
         // Попытка изменить адрес электронной почты и имя пользователя без предоставления токена доступа
-        Response response = baseSteps.sendPatchUserRequestAndGetResponse(rndUser, "newEmail", "newName", "");
+        Response response = userSteps.sendPatchUserRequestAndGetResponse(rndUser, "newEmail", "newName", "");
         // Проверяем, что код ответа 401 Unauthorized, а сообщение ответа соответствует ожидаемому сообщению об ошибке.
         response.then().statusCode(HttpStatus.SC_UNAUTHORIZED);
         baseSteps.checkErrorMessage(response, ErrorMessage.USER_UPDATE_UNAUTHORIZED_ERROR_401);
@@ -58,7 +58,7 @@ public class PatchUserChangeValidationTest extends BaseTest {
         // Получаем access token второго пользователя
         String accessToken = baseSteps.loginUserAndGetToken(rndSecondUser);
         // Попытка изменить адрес электронной почты на почту существующего пользователя
-        Response response = baseSteps.sendPatchUserRequestAndGetResponse(rndUser, newSecondUserEmail, "newName", accessToken);
+        Response response = userSteps.sendPatchUserRequestAndGetResponse(rndUser, newSecondUserEmail, "newName", accessToken);
         // Проверяем, что код ответа 403 Forbidden, а сообщение ответа соответствует ожидаемому сообщению об ошибке.
         response.then().statusCode(HttpStatus.SC_FORBIDDEN);
         baseSteps.checkErrorMessage(response, ErrorMessage.USER_UPDATE_EXISTING_EMAIL_ERROR_403);
